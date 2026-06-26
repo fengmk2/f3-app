@@ -2,19 +2,19 @@ import tailwindcss from '@tailwindcss/vite'
 import { reactRouter } from '@react-router/dev/vite'
 import checker from 'vite-plugin-checker'
 import type { PluginOption } from 'vite-plus'
-import { defineConfig } from 'vite-plus'
+import { defineConfig, lazyPlugins } from 'vite-plus'
 
 export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
-  plugins: [
+  plugins: lazyPlugins(() => [
     tailwindcss() as PluginOption,
     reactRouter() as PluginOption,
     checker({
       typescript: true,
     }) as PluginOption,
-  ],
+  ]),
   build: {
     rollupOptions: {
       onLog(level, log, handler) {

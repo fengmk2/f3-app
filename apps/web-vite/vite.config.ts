@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 import Checker from 'vite-plugin-checker'
 import Pages from 'vite-plugin-pages'
 import type { PluginOption } from 'vite-plus'
-import { defineConfig } from 'vite-plus'
+import { defineConfig, lazyPlugins } from 'vite-plus'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,7 +18,7 @@ export default defineConfig({
       '@ui-internal/': `${resolve(import.meta.dirname, '../../packages/ui/src')}/`,
     },
   },
-  plugins: [
+  plugins: lazyPlugins(() => [
     tailwindcss() as PluginOption,
     react() as PluginOption,
     Checker({ typescript: true }) as PluginOption,
@@ -27,7 +27,7 @@ export default defineConfig({
       exclude: ['**/[A-Z]*.tsx'],
       importMode: 'sync',
     }) as PluginOption,
-  ],
+  ]),
   server: {
     proxy: {
       '/api': {

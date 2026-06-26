@@ -8,7 +8,7 @@ import { isAbsolute, resolve } from 'node:path'
 import { nitro } from 'nitro/vite'
 import checker from 'vite-plugin-checker'
 import type { PluginOption } from 'vite-plus'
-import { defineConfig } from 'vite-plus'
+import { defineConfig, lazyPlugins } from 'vite-plus'
 
 type TraceResult = {
   fileList?: Set<string>
@@ -36,7 +36,7 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  plugins: [
+  plugins: lazyPlugins(() => [
     tailwindcss() as PluginOption,
     tanstackStart({
       rsc: {
@@ -58,7 +58,7 @@ export default defineConfig({
     checker({
       typescript: true,
     }) as PluginOption,
-  ],
+  ]),
   build: {
     outDir: '.output/public',
     rolldownOptions: {
